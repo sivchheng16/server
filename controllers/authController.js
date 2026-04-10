@@ -7,10 +7,10 @@ dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secret';
 
-// SIGNUP: Create a new user
-export const signup = async (req, res) => {
+// register: Create a new user
+export const register = async (req, res) => {
     const { name, email, password, role } = req.body;
-    
+
     try {
         // Check if user already exists
         const existingUser = await User.findOne({ email });
@@ -33,13 +33,13 @@ export const signup = async (req, res) => {
 
         res.status(201).json({ message: 'User created successfully', userId: newUser._id });
     } catch (err) {
-        console.error('Signup error:', err);
+        console.error('register error:', err);
         res.status(500).json({ message: 'Something went wrong during registration' });
     }
 };
 
-// SIGNIN: Authenticate user and return token
-export const signin = async (req, res) => {
+// login: Authenticate user and return token
+export const login = async (req, res) => {
     const { email, password } = req.body;
 
     try {
@@ -73,12 +73,12 @@ export const signin = async (req, res) => {
             }
         });
     } catch (err) {
-        console.error('Signin error:', err);
+        console.error('login error:', err);
         res.status(500).json({ message: 'Something went wrong during sign-in' });
     }
 };
 
-// SIGNOUT: Placeholder for sign-out logic
-export const signout = (req, res) => {
+// loginout: Placeholder for sign-out logic
+export const loginout = (req, res) => {
     res.status(200).json({ message: 'User signed out successfully' });
 };
