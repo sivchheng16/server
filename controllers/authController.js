@@ -7,9 +7,9 @@ dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secret';
 
-// register: Create a new user
-export const register = async (req, res) => {
-    const { name, email, password, role } = req.body;
+// signUp: Create a new user
+export const signUp = async (req, res) => {
+    const { firstName, lastName, email, password, role } = req.body;
 
     try {
         // Check if user already exists
@@ -23,7 +23,8 @@ export const register = async (req, res) => {
 
         // Create user
         const newUser = new User({
-            name,
+            firstName,
+            lastName,
             email,
             password: hashedPassword,
             role: role || 'user'
@@ -38,8 +39,8 @@ export const register = async (req, res) => {
     }
 };
 
-// login: Authenticate user and return token
-export const login = async (req, res) => {
+// signIn: Authenticate user and return token
+export const signIn = async (req, res) => {
     const { email, password } = req.body;
 
     try {
@@ -67,7 +68,8 @@ export const login = async (req, res) => {
             token,
             user: {
                 id: user._id,
-                name: user.name,
+                firstName: user.firstName,
+                lastName: user.lastName,
                 email: user.email,
                 role: user.role
             }
@@ -78,7 +80,7 @@ export const login = async (req, res) => {
     }
 };
 
-// loginout: Placeholder for sign-out logic
-export const loginout = (req, res) => {
+// signOut: Placeholder for sign-out logic
+export const signOut = (req, res) => {
     res.status(200).json({ message: 'User signed out successfully' });
 };
