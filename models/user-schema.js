@@ -4,15 +4,15 @@ const userSchema = new mongoose.Schema(
     firstName: {
       type: String,
       required: [true, "Name is required"],
-      minlenght: 2,
-      maxlenght: 50,
+      minlength: 2,
+      maxlength: 50,
       trim: true,
     },
     lastName: {
       type: String,
       required: [true, "Name is required"],
-      minlenght: 2,
-      maxlenght: 50,
+      minlength: 2,
+      maxlength: 50,
       trim: true,
     },
     email: {
@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: [true, "Password is required"],
-      minlenght: 6,
+      minlength: 6,
     },
     role: {
       type: String,

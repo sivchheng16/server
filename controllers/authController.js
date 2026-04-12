@@ -9,11 +9,14 @@ const JWT_SECRET = process.env.JWT_SECRET || 'secret';
 
 // signUp: Create a new user
 export const signUp = async (req, res) => {
+    console.log('SignUp Request Received:', req.body);
     const { firstName, lastName, email, password, role } = req.body;
 
     try {
         // Check if user already exists
+        console.log('Checking existence for email:', email);
         const existingUser = await User.findOne({ email });
+        console.log('Existing User matching email:', existingUser ? 'FOUND' : 'NOT FOUND');
         if (existingUser) {
             return res.status(400).json({ message: 'User already exists with this email' });
         }
@@ -32,7 +35,24 @@ export const signUp = async (req, res) => {
 
         await newUser.save();
 
-        res.status(201).json({ message: 'User created successfully', userId: newUser._id });
+        // Generate JWT for auto-login
+        const token = jwt.sign(
+            { id: newUser._id, role: newUser.role },
+            JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+
+        res.status(201).json({
+            message: 'User created successfully',
+            token,
+            user: {
+                id: newUser._id,
+                firstName: newUser.firstName,
+                lastName: newUser.lastName,
+                email: newUser.email,
+                role: newUser.role
+            }
+        });
     } catch (err) {
         console.error('register error:', err);
         res.status(500).json({ message: 'Something went wrong during registration' });
